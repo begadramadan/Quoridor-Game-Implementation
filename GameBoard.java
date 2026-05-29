@@ -166,5 +166,25 @@ public class GameBoard extends JPanel {
             g.drawString((engine.isVsAI ? "THE AI AGENT WINS!" : "PLAYER 2 WINS THE MATCH!"), 15, textY - 15);
         }
     }
-
+// ==========================================
+    // INNER MOUSE INTERCEPT INTERPRETATION LOGIC
+    // ==========================================
+    private class BoardMouseListener extends MouseAdapter {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int clickX = e.getX();
+            int clickY = e.getY();
+            
+            // Halt user play clicks instantly if a win state condition has been logged
+            if (engine.p1Row == 8 || engine.p2Row == 0) return;
+            
+            // Prevent users from clicking and interfering during the AI agent's turn cycle
+            if (engine.isVsAI && !engine.isP1Turn) return;
+            
+            // Use remnants arithmetic to isolate if a click fell on a cell body vs channel path
+            int xInCell = clickX % (CELL_SIZE + WALL_SIZE);
+            int yInCell = clickY % (CELL_SIZE + WALL_SIZE);
+            
+            int col = clickX / (CELL_SIZE + WALL_SIZE);
+            int row = clickY / (CELL_SIZE + WALL_S
 }
